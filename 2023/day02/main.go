@@ -43,6 +43,7 @@ func FindDigitBeforeSubstring(inputString, substring string) (int, error) {
 
 func CheckPossibility(comparisons []int, max int) bool {
 	for i := 0; i < len(comparisons); i++ {
+		fmt.Printf("input value is %d, comparison value is %d\n", comparisons[i], max)
 		if comparisons[i] > max {
 			return false
 		}
@@ -53,11 +54,13 @@ func CheckPossibility(comparisons []int, max int) bool {
 var scores []int
 
 func main() {
-	fileContent, err := input.ReadFileLines("input_test.txt")
+	fileContent, err := input.ReadFileLines("input.txt")
 
 	if err != nil {
 		panic("cannot read input file")
 	}
+
+	var isRed, isBlue, isGreen bool
 
 	for _, line := range fileContent {
 		splitOnColon := strings.Split(line, ":")
@@ -78,15 +81,14 @@ func main() {
 			if b != 0 {
 				blues = append(blues, b)
 			}
-			fmt.Println(blues)
-			isRed := CheckPossibility(reds, Red)
-			isBlue := CheckPossibility(blues, Blue)
-			isGreen := CheckPossibility(greens, Green)
+			isRed = CheckPossibility(reds, Red)
+			isBlue = CheckPossibility(blues, Blue)
+			isGreen = CheckPossibility(greens, Green)
 
-			if isRed && isBlue && isGreen {
-				scores = append(scores, gameInt)
-			}
-
+		}
+		fmt.Println(gameInt)
+		if isRed && isBlue && isGreen {
+			scores = append(scores, gameInt)
 		}
 
 	}
