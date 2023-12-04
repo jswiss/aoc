@@ -34,27 +34,23 @@ func getNums(line string) (int, error) {
 }
 
 func ReplaceSubstrings(line string) string {
-	strNums := map[string]int{
-		"one":   1,
-		"two":   2,
-		"three": 3,
-		"four":  4,
-		"five":  5,
-		"six":   6,
-		"seven": 7,
-		"eight": 8,
-		"nine":  9,
+	strNums := map[string]string{
+		"one":   "o1e",
+		"two":   "t2o",
+		"three": "t3e",
+		"four":  "f4r",
+		"five":  "f5e",
+		"six":   "s6x",
+		"seven": "s7n",
+		"eight": "e8t",
+		"nine":  "n9e",
 	}
 
 	// handle edge
 
 	for key, val := range strNums {
-		idx := strings.Index(line, key)
-
-		if idx != -1 {
-			before := line[:idx+1]
-			after := line[idx+1:]
-			line = before + strconv.Itoa(val) + after
+		if strings.Contains(line, key) {
+			line = strings.ReplaceAll(line, key, val)
 		}
 	}
 	return line
