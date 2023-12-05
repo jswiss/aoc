@@ -43,7 +43,6 @@ func FindDigitBeforeSubstring(inputString, substring string) (int, error) {
 
 func CheckPossibility(comparisons []int, max int) bool {
 	for i := 0; i < len(comparisons); i++ {
-		fmt.Printf("input value is %d, comparison value is %d\n", comparisons[i], max)
 		if comparisons[i] > max {
 			return false
 		}
@@ -51,23 +50,34 @@ func CheckPossibility(comparisons []int, max int) bool {
 	return true
 }
 
-var scores []int
+func GetMax(vals []int) int {
+	max := vals[0]
+	for i := range vals {
+		if vals[i] > max {
+			max = vals[i]
+		}
+	}
+	return max
+}
 
 func main() {
+	var scores []int
 	fileContent, err := input.ReadFileLines("input.txt")
 
 	if err != nil {
 		panic("cannot read input file")
 	}
 
-	var isRed, isBlue, isGreen bool
-
+	var sumPower int
 	for _, line := range fileContent {
+		var isRed, isBlue, isGreen bool
+		var reds, greens, blues []int
+
 		splitOnColon := strings.Split(line, ":")
 		games := strings.Split(splitOnColon[1], ";")
 		gameNum := strings.Split(splitOnColon[0], " ")
 		gameInt, _ := strconv.Atoi(gameNum[1])
-		var reds, greens, blues []int
+
 		for _, val := range games {
 			r, _ := FindDigitBeforeSubstring(val, "red")
 			if r != 0 {
@@ -86,15 +96,18 @@ func main() {
 			isGreen = CheckPossibility(greens, Green)
 
 		}
-		fmt.Println(gameInt)
 		if isRed && isBlue && isGreen {
 			scores = append(scores, gameInt)
 		}
-
+		minRed := GetMax(reds)
+		minBlue := GetMax(blues)
+		minGreen := GetMax(greens)
+		sumPower += (minRed * minBlue * minGreen)
 	}
 
 	u := utils.Ints(scores)
 	sum := utils.SliceSum(u)
 	fmt.Println("Answer 1 is: ", sum)
+	fmt.Println("Answer 2 is: ", sumPower)
 
 }
